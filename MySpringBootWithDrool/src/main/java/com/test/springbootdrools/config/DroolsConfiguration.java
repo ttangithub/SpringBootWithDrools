@@ -9,6 +9,7 @@ import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.KieModule;
 import org.kie.api.builder.KieRepository;
+import org.kie.api.builder.KieScanner;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -64,6 +65,11 @@ public class DroolsConfiguration {
         KieModule kieModule = kb.getKieModule();
 
         KieContainer kContainer = kieServices.newKieContainer(kieModule.getReleaseId());
+        
+        KieScanner kScanner = kieServices.newKieScanner( kContainer );
+
+	    // Start the KieScanner polling the Maven repository every 10 seconds
+	    kScanner.start( 10000L );
 
         return kContainer.newKieSession();
 
